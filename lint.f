@@ -1,0 +1,6 @@
+lint_stubs/BUFG_GT.sv
+lint_stubs/GTXE2_COMMON.sv
+lint_stubs/qeciphy_clk_mmcm.sv
+lint_stubs/qeciphy_gty_transceiver.sv
+lint_stubs/qeciphy_gtx_transceiver.sv
+lint_stubs/qeciphy_gth_transceiver.sv
