@@ -1,6 +1,4 @@
-##################################################################
-# Vivado Version Warning Only (Script is version-agnostic)
-##################################################################
+# Vivado version check
 set scripts_vivado_version 2024.1
 set current_vivado_version [version -short]
 if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
@@ -8,9 +6,7 @@ if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
   puts "If you encounter issues, open the IP in Vivado and upgrade it if needed."
 }
 
-##################################################################
-# Accept part_number and output_dir as arguments
-##################################################################
+# Parse arguments
 if { !([info exists ::argv] && [llength $::argv] >= 2) } {
   puts "ERROR: Usage: vivado -mode batch -source vendor/xilinx/qeciphy_gtx_transceiver.tcl -tclargs <part_number> <output_dir>"
   return 1
@@ -20,9 +16,7 @@ set output_dir [lindex $::argv 1]
 puts "INFO: Using part number: $part_number"
 puts "INFO: Output directory: $output_dir"
 
-##################################################################
-# Create Project in output_dir
-##################################################################
+# Create project in output directory
 if { [file exists $output_dir] } {
   foreach f [glob -nocomplain -directory $output_dir *] {
     file delete -force $f
@@ -35,9 +29,7 @@ create_project temp_project $output_dir -part $part_number
 set_property target_language Verilog [current_project]
 set_property simulator_language Mixed [current_project]
 
-##################################################################
-# Check Required IPs
-##################################################################
+# Check required IPs
 set required_ips { xilinx.com:ip:gtwizard:3.6 }
 foreach ip_vlnv $required_ips {
   set ip_obj [get_ipdefs -all $ip_vlnv]
@@ -47,9 +39,7 @@ foreach ip_vlnv $required_ips {
   }
 }
 
-##################################################################
 # Create IP qeciphy_gtx_transceiver
-##################################################################
 set ip_name qeciphy_gtx_transceiver
 set ip_obj [create_ip -name gtwizard -vendor xilinx.com -library ip -version 3.6 -module_name $ip_name]
 

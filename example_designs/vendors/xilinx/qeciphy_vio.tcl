@@ -1,6 +1,4 @@
-##################################################################
-# Vivado Version Warning Only (Script is version-agnostic)
-##################################################################
+# Vivado version check
 set scripts_vivado_version 2024.1
 set current_vivado_version [version -short]
 if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
@@ -8,9 +6,7 @@ if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
   puts "If you encounter issues, open the IP in Vivado and upgrade it if needed."
 }
 
-##################################################################
-# Accept part_number as argument (no longer need output_dir)
-##################################################################
+# Parse arguments
 if { !([info exists ::argv] && [llength $::argv] >= 1) } {
   puts "ERROR: Usage: vivado -mode batch -source qeciphy_vio.tcl -tclargs <part_number>"
   return 1
@@ -18,9 +14,7 @@ if { !([info exists ::argv] && [llength $::argv] >= 1) } {
 set part_number [lindex $::argv 0]
 puts "INFO: Using part number: $part_number"
 
-##################################################################
-# Check Required IPs
-##################################################################
+# Check required IPs
 set required_ips { xilinx.com:ip:vio:3.0 }
 foreach ip_vlnv $required_ips {
   set ip_obj [get_ipdefs -all $ip_vlnv]
@@ -30,9 +24,7 @@ foreach ip_vlnv $required_ips {
   }
 }
 
-##################################################################
 # Create IP qeciphy_vio in current project
-##################################################################
 set ip_name qeciphy_vio
 puts "INFO: Creating IP core '$ip_name' in current project"
 
