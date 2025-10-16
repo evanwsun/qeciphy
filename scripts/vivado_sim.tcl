@@ -1,0 +1,96 @@
+# SPDX-License-Identifier: None
+# Copyright (c) 2025 Riverlane Ltd.
+
+##################################################################
+# Argument handling
+##################################################################
+if { !([info exists ::argv] && [llength $::argv] >= 3) } {
+    puts "ERROR: Usage: vivado -mode batch -source vivado_sim.tcl -tclargs <SIM_TOP> <PART> <VARIANT> <SRC_FILES> -- <SIM_FILES>"
+    exit 1
+}
+
+set sim_top     [lindex $::argv 0]
+set part_number [lindex $::argv 1] 
+set variant     [lindex $::argv 2]
+
+# Find the separator "--" and split files accordingly
+set separator_index -1
+for {set i 0} {$i < [llength $::argv]} {incr i} {
+    if {[lindex $::argv $i] eq "--"} {
+        set separator_index $i
+        break
+    }
+}
+
+if {$separator_index == -1} {
+    # No separator found, assume all remaining args are source files
+    set src_files [lrange $::argv 3 end]
+    set sim_files {}
+} else {
+    set src_files [lrange $::argv 3 [expr {$separator_index - 1}]]
+    set sim_files [lrange $::argv [expr {$separator_index + 1}] end]
+}
+
+puts "INFO: Simulation top: $sim_top"
+puts "INFO: Using part number: $part_number"
+puts "INFO: Using variant: $variant"
+puts "INFO: Source files: $src_files"
+puts "INFO: Simulation files: $sim_files"
+
+##################################################################
+# Project creation
+##################################################################
+set output_dir "./run/sim_qeciphy"
+create_project qeciphy_sim $output_dir -part $part_number -force
+set_property target_language Verilog [current_project]
+set_property simulator_language Mixed [current_project]
+
+##################################################################
+# Add sources from arguments
+##################################################################
+# Add source files to sources_1
+foreach f $src_files {
+    if {$f ne ""} {
+        add_files -fileset sources_1 $f
+    }
+}
+
+# Add simulation files to sim_1  
+foreach f $sim_files {
+    if {$f ne ""} {
+        add_files -fileset sim_1 $f
+    }
+}
+
+##################################################################
+# Add all .xci files from xci/
+##################################################################
+if { [file exists "xci"] } {
+    foreach xci_file [glob -nocomplain xci/*.xci] {
+        import_ip $xci_file
+    }
+}
+
+##################################################################
+# Set up simulation fileset and properties
+##################################################################
+set_property top $sim_top [get_filesets sim_1]
+set_property -name {xsim.simulate.runtime} -value {1s} -objects [get_filesets sim_1]
+
+# Pass variant define to simulation
+set_property verilog_define "GT_TYPE=\"$variant\"" [get_filesets sim_1]
+
+##################################################################
+# Update hierarchy and upgrade IPs
+##################################################################
+update_compile_order -fileset sources_1
+upgrade_ip [get_ips]
+
+##################################################################
+# Run simulation
+##################################################################
+if {[catch launch_simulation errorstring]} {
+    puts "ERROR: Vivado - $errorstring"
+} else {
+    close_sim
+}
