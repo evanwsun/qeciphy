@@ -97,6 +97,25 @@ module QECIPHY #(
 );
 ```
 
+## Project Structure
+
+```
+qeciphy/
+├── src/                         # Core QECIPHY SystemVerilog sources
+├── tb/                          # Testbench files
+├── lib/                         # self-contained, reusable RTL building blocks
+├── example_designs/             # Platform-specific integration examples
+├── vendors/                     # Vendor-specific IP generation scripts
+├── scripts/                     # Build and utility scripts
+├── lint_stubs/                  # Lint placeholder modules for IP cores
+├── config.json                  # Build configuration (profiles, settings)
+├── Makefile                     # Build automation
+├── src.f, sim.f, lint.f         # File lists for different flows
+├── CONTRIBUTING.md              # Development guidelines
+├── README.md                    # This file
+└── LICENSE                      # License information
+```
+
 ## Performance (Placeholder)
 
 | Metric | GTX (7-series) | GTH/GTY (UltraScale+) |
@@ -117,7 +136,7 @@ If you want to contribute to QECIPHY development, see [CONTRIBUTING.md](CONTRIBU
 ## Documentation
 
 - **[Integration Guide](docs/integration.md)** - How to use QECIPHY in your design
-- **[QECi Specification](https://www.riverlane.com/get-qec-ready/qeci)** - Physical layer specification (LaTeX source)
+- **[QECi Specification](https://www.riverlane.com/get-qec-ready/qeci)** - Physical layer specification
 - **[Contributing Guide](CONTRIBUTING.md)** - Development and contribution guidelines
 
 ## License
