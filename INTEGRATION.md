@@ -331,6 +331,25 @@ set_clock_groups -asynchronous -group [get_clocks RCLK] -group [get_clocks FCLK]
 
 ## Data Path Integration Examples
 
+### Reset Synchronization
+
+The `ARSTn` input requires a properly synchronized reset signal. The following example shows how to synchronize an external asynchronous reset (`async_rst_n`) to the AXI clock domain to create `aresetn` that is asynchronously deasserted and synchronously asserted:
+
+```systemverilog
+logic [1:0] aresetn_sync;
+logic aresetn;
+
+assign aresetn = aresetn_sync[1];
+
+always_ff @(posedge axi_clk or negedge async_rst_n) begin
+    if (!async_rst_n) begin
+        aresetn_sync <= 2'h0;
+    end else begin
+        aresetn_sync <= {aresetn_sync[0], 1'b1};
+    end
+end
+```
+
 ### TX Data Path Example
 
 ```systemverilog
@@ -348,7 +367,7 @@ always_ff @(posedge axi_clk) begin
 end
 ```
 
-#### RX Data Path Example
+### RX Data Path Example
 
 ```systemverilog
 // Your application logic receives data
