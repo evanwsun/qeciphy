@@ -36,7 +36,7 @@ Include in your issue report:
    git checkout -b feature/your-feature-name
    ```
 
-2. **Make your changes** following the coding standards below
+2. **Make your changes** following the coding standards below.
 
 3. **Test your changes:**
    ```bash
@@ -92,19 +92,6 @@ module qeciphy_example #(
 
 endmodule
 ```
-
-## Development Make Targets
-
-```bash
-make clean                                 # Clean build artifacts
-make lint                                  # Run Verilator linting
-make format                                # Format SystemVerilog files
-make generate-xci OPT_PROFILE=<profile>    # Generate vendor IP
-make sim OPT_PROFILE=<profile>             # Run simulation
-make synth OPT_PROFILE=<profile>           # Run synthesis
-```
-
-**Note:** Always run `make generate-xci` before `make sim` or `make synth`.
 
 ## Adding New Hardware Support
 

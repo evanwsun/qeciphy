@@ -19,8 +19,8 @@ QECIPHY provides a simple AXI4-Stream interface that abstracts away all physical
 1. **Platform Configuration**: Set up your hardware profile and generate IP dependencies
 2. **HDL Instantiation**: Instantiate QECIPHY module directly in your SystemVerilog design
 3. **Interface Connection**: Connect AXI4-Stream interfaces to your application logic
-4. **Constraint Application**: Apply provided timing constraints
-5. **Status Monitoring**: Implement link status and error handling
+4. **Status Monitoring**: Implement link status and error handling
+5. **Constraint Application**: Apply provided timing constraints
 
 ## Prerequisites
 
@@ -38,7 +38,8 @@ QECIPHY provides a simple AXI4-Stream interface that abstracts away all physical
 
 ### Design Requirements
 
-- Your design must handle AXI4-Stream protocol
+Your design must include:
+- AXI4-Stream protocol
 - Reset synchronization logic
 - Status monitoring and error handling logic
 
@@ -225,7 +226,9 @@ QECIPHY #(
 
 ## Timing Constraints
 
-You must add the following timing constraints to your project for proper operation. These constraints handle the clock relationships within the QECIPHY.
+You must add the following timing constraints to your project for proper operation.
+
+We recommend instantiating the IP with the name i_QECIPHY or u_QECIPHY. The following constraints can then be applied based on the type of transceiver being used. These constraints handle the clock relationships within the QECIPHY.
 
 ### GTY Transceiver Constraints
 
@@ -358,7 +361,7 @@ always_ff @(posedge axi_clk) begin
     if (!aresetn) begin
         m_axis_tx_tvalid <= 1'b0;
         m_axis_tx_tdata  <= 64'h0;
-    end else if (data_available && m_axis_tx_tready) begin
+    end else if (data_available) begin
         m_axis_tx_tvalid <= 1'b1;
         m_axis_tx_tdata  <= application_data;
     end else if (m_axis_tx_tready) begin
@@ -417,6 +420,12 @@ end
 ```
 
 ## Interface Details
+
+### Clocking and Reset
+- **RCLK**: Reference clock for transceivers (e.g., 156.25 MHz)
+- **FCLK**: Free-running clock (e.g., 100 MHz)
+- **ACLK**: AXI4-Stream clock for TX/RX interfaces
+- **ARSTn**: Active LOW asynchronous reset input, synchronized internally
 
 ### AXI4-Stream Protocol
 
