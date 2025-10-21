@@ -2,7 +2,7 @@
 
 **Q**uantum **E**rror **C**orrection **I**nterface **PHY**sical Layer
 
-QECIPHY is a physical layer implementation for FPGA-to-FPGA communication designed according to the QECi (Quantum Error Correction interface) open standard. Originally designed for quantum error correction systems, QECIPHY is a lightweight IP that exposes a simple AXI4-Stream interface, significantly simplifying high-speed FPGA-to-FPGA communications for any application.
+QECIPHY is a physical layer implementation according to the QECi (Quantum Error Correction interface) open standard designed for FPGA-to-FPGA communication. Originally designed for quantum error correction systems, QECIPHY is a lightweight IP that exposes a simple AXI4-Stream based interface, significantly simplifying high-speed FPGA-to-FPGA communication for any application.
 
 [![License](https://img.shields.io/badge/License-BSD--3--Clause-blue.svg)](LICENSE)
 [![Vivado](https://img.shields.io/badge/Vivado-2024%2B-orange.svg)]()
@@ -13,20 +13,14 @@ QECIPHY is a physical layer implementation for FPGA-to-FPGA communication design
 - **Simple Interface**: AXI4-Stream interface hides all physical layer complexity
 - **Universal Compatibility**: Supports any Xilinx FPGA with GTX, GTH, or GTY transceivers
 - **Performance**: 12.5 Gbps data rate with ~150-200ns latency
-- **Transparent Operation**: Handles clock recovery, frame alignment, CRC checks automatically
-- **No Protocol Overhead**: Send valid packets on one end, receive valid packets on the other
-- **Open Standard**: Based on QECi specification - an open standard
-
-## What QECIPHY Does For You
-
-QECIPHY deals with all the low-level physical layer details:
-- **Clock Recovery**: Recovers clock from incoming data stream
+- **Open Standard**: Based on QECi Specification - an open standard
+- **Clock Recovery**: Recovers clock from incoming data stream automatically
 - **Frame Alignment**: Automatic byte and word boundary detection
 - **Error Detection**: CRC-16 for data packets, CRC-8 for control packets
 - **Link Management**: Automatic link training and status monitoring
 - **Power Management**: Optional power state control with P-channel interface
 
-This means you only need to send valid data packets from one FPGA and receive valid data packets on the other - no need to add headers, manage link state, or handle physical layer protocols.
+**Bottom Line:** You only need to send valid data packets from one FPGA and receive valid data packets on the other - no need to add headers, manage link state, or handle physical layer protocols.
 
 ## Quick Start
 
@@ -52,15 +46,19 @@ git clone https://github.com/riverlane/qeciphy.git
 cd qeciphy
 
 # Generate XCI cores for your platform
-make generate-xci OPT_PROFILE=zcu216    # GTY transceivers
+make generate-xci OPT_PROFILE=zcu216     # GTY transceivers
 # make generate-xci OPT_PROFILE=zcu106   # GTH transceivers  
 # make generate-xci OPT_PROFILE=kasliSoC # GTX transceivers
 
 # Run your first simulation
-make sim OPT_PROFILE=zcu216
+make sim OPT_PROFILE=zcu216         # GTY transceivers
+# make sim OPT_PROFILE=zcu106       # GTH transceivers
+# make sim OPT_PROFILE=kasliSoC     # GTX transceivers
 
 # Run synthesis
-make synth OPT_PROFILE=zcu216
+make synth OPT_PROFILE=zcu216       # GTY transceivers
+# make synth OPT_PROFILE=zcu106     # GTH transceivers
+# make synth OPT_PROFILE=kasliSoC   # GTX transceivers
 ```
 
 ## Interface
@@ -116,6 +114,21 @@ qeciphy/
 └── LICENSE                      # License information
 ```
 
+## Complete List of Make Targets
+
+```bash
+make clean                                      # Clean build artifacts
+make lint                                       # Run Verilator linting
+make format                                     # Format SystemVerilog files
+make generate-xci OPT_PROFILE=<profile>         # Generate vendor IP
+make sim OPT_PROFILE=<profile>                  # Run simulation (batch mode)
+make sim OPT_PROFILE=<profile> OPT_MODE=gui     # Run simulation (GUI mode)
+make synth OPT_PROFILE=<profile>                # Run synthesis (batch mode)
+make synth OPT_PROFILE=<profile> OPT_MODE=gui   # Run synthesis (GUI mode)
+```
+
+**Note:** Always run `make generate-xci` before `make sim` or `make synth`.
+
 ## Performance (Placeholder)
 
 | Metric | GTX (7-series) | GTH/GTY (UltraScale+) |
@@ -125,19 +138,11 @@ qeciphy/
 
 *Performance varies by platform and configuration*
 
-## Integration
+## Important Links
 
-If you want to integrate QECIPHY into your design, see [docs/integration.md](docs/integration.md).
-
-## Development
-
-If you want to contribute to QECIPHY development, see [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## Documentation
-
-- **[Integration Guide](INTEGRATION.md)** - How to use QECIPHY in your design
 - **[QECi Specification](https://www.riverlane.com/get-qec-ready/qeci)** - Physical layer specification
-- **[Contributing Guide](CONTRIBUTING.md)** - Development and contribution guidelines
+- **[Integration Guide](INTEGRATION.md)** - How to use QECIPHY in your design
+- **[Contribution Guide](CONTRIBUTING.md)** - Development and contribution guidelines
 
 ## License
 
