@@ -1,0 +1,21 @@
+name: CI Pipeline
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  fpga:
+    runs-on: sanity-builder
+    environment: ci
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Lint FPGA
+        run: |
+          bash ci/lint.sh
+      - name: Build FPGA
+        run: |
+          bash ci/fpga.sh
+      - name: Run sim
+        run: |
+          bash ci/sim.sh
