@@ -7,6 +7,7 @@ jobs:
   # Detect which files have changed to determine which jobs to run
   changes:
     runs-on: sanity-builder
+    environment: ci
     outputs:
       lint: ${{ steps.changes.outputs.lint }}
       format: ${{ steps.changes.outputs.format }}
