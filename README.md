@@ -136,8 +136,6 @@ make synth OPT_PROFILE=<profile> OPT_MODE=gui   # Run synthesis (GUI mode)
 | **Latency** | ~220ns | ~190ns |~195ns |
 | **LUT** | 1372 | 1230 | 1230 |
 | **FF** | 1229 | 1156 | 1156 |
-| **BRAM** | 0 | 0 | 0 |
-| **DSP** | 0 | 0 | 0 |
 
 *Performance varies by platform and configuration*
 
