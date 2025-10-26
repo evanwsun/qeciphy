@@ -4,23 +4,80 @@ on:
     branches: [main]
 
 jobs:
+  # Detect which files have changed to determine which jobs to run
+  changes:
+    runs-on: sanity-builder
+    outputs:
+      lint: ${{ steps.changes.outputs.lint }}
+      format: ${{ steps.changes.outputs.format }}
+      simulation: ${{ steps.changes.outputs.simulation }}
+      synthesis: ${{ steps.changes.outputs.synthesis }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            lint:
+              - 'lint_stubs/**'
+              - 'src/**'
+              - 'src.f'
+              - 'lint.f'
+              - 'lib/**'
+              - 'lint_waivers.vlt'
+              - 'Makefile'
+              - 'scripts/**'
+              - 'config.json'
+            format:
+              - '**/*.sv'
+              - '**/*.sva'
+              - '**/*.svh'
+              - '**/*.v'
+            simulation:
+              - 'src/**'
+              - 'lib/**'
+              - 'tb/**'
+              - 'vendors/**'
+              - 'sim.f'
+              - 'src.f'
+              - 'Makefile'
+              - 'scripts/**'
+              - 'config.json'
+            synthesis:
+              - 'src/**'
+              - 'lib/**'
+              - 'example_designs/**'
+              - 'vendors/**'
+              - 'src.f'
+              - 'Makefile'
+              - 'scripts/**'
+              - 'config.json'
+
   # Static analysis jobs that must pass before expensive FPGA jobs
   static-checks:
+    needs: changes
+    if: needs.changes.outputs.lint == 'true' || needs.changes.outputs.format == 'true'
     runs-on: sanity-builder
     environment: ci
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
       - name: Check code formatting
+        if: needs.changes.outputs.format == 'true'
         run: |
           bash ci/format.sh
       - name: Lint FPGA code
+        if: needs.changes.outputs.lint == 'true'
         run: |
           bash ci/lint.sh
 
-  # FPGA jobs that only run if static checks pass
   fpga-simulation:
-    needs: static-checks
+    needs: [changes, static-checks]
+    if: |
+      always() && 
+      needs.changes.outputs.simulation == 'true' && 
+      (needs.static-checks.result == 'success' || needs.static-checks.result == 'skipped')
     runs-on: sanity-builder
     environment: ci
     steps:
@@ -31,7 +88,11 @@ jobs:
           bash ci/sim.sh
 
   fpga-synthesis:
-    needs: static-checks
+    needs: [changes, static-checks]
+    if: |
+      always() && 
+      needs.changes.outputs.synthesis == 'true' && 
+      (needs.static-checks.result == 'success' || needs.static-checks.result == 'skipped')
     runs-on: sanity-builder
     environment: ci
     steps:
