@@ -60,7 +60,6 @@ jobs:
     needs: changes
     if: needs.changes.outputs.lint == 'true' || needs.changes.outputs.format == 'true'
     runs-on: sanity-builder
-    environment: ci
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -80,7 +79,6 @@ jobs:
       needs.changes.outputs.simulation == 'true' && 
       (needs.static-checks.result == 'success' || needs.static-checks.result == 'skipped')
     runs-on: sanity-builder
-    environment: ci
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -95,7 +93,6 @@ jobs:
       needs.changes.outputs.synthesis == 'true' && 
       (needs.static-checks.result == 'success' || needs.static-checks.result == 'skipped')
     runs-on: sanity-builder
-    environment: ci
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
