@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: None
+// SPDX-License-Identifier: LicenseRef-LICENSE
 // -----------------------------------------------------------------------------
 // File        : qeciphy_gtx_transceiver.sv
 // Description : Lint stub for Xilinx GTX transceiver module.
