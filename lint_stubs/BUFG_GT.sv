@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: None
+// SPDX-License-Identifier: LicenseRef-LICENSE
 // -----------------------------------------------------------------------------
 // File        : BUFG_GT.sv
 // Description : Lint stub for Xilinx BUFG GT primitive.

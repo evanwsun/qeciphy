@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: None
+// SPDX-License-Identifier: LicenseRef-LICENSE
 // -----------------------------------------------------------------------------
 // File        : GTXE2_COMMON.sv
 // Description : Lint stub for Xilinx GTXE2_COMMON module.

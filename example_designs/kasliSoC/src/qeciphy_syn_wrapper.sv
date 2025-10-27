@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: None
+// SPDX-License-Identifier: LicenseRef-LICENSE
 // Copyright (c) 2025 Riverlane Ltd.
 // Original authors: Dogancan Davutoglu, Gargi Sunil, Aniket Datta
 

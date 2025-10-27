@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: None
+// SPDX-License-Identifier: LicenseRef-LICENSE
 // -----------------------------------------------------------------------------
 // File        : qeciphy_gth_transceiver.sv
 // Description : Lint stub for Xilinx GTH transceiver module.
