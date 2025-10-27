@@ -357,12 +357,14 @@ end
 ### TX Data Path Example
 
 ```systemverilog
+assign busy = (m_axis_tx_tvalid & !m_axis_tx_tready);
+
 // Your application logic generates data
 always_ff @(posedge axi_clk) begin
     if (!aresetn) begin
         m_axis_tx_tvalid <= 1'b0;
         m_axis_tx_tdata  <= 64'h0;
-    end else if (data_available && !m_axis_tx_tvalid) begin
+    end else if (data_available && !busy) begin
         m_axis_tx_tvalid <= 1'b1;
         m_axis_tx_tdata  <= application_data;
     end else if (m_axis_tx_tready) begin
@@ -401,18 +403,22 @@ typedef enum logic [3:0] {
 } qeciphy_status_t;
 
 // Monitor link status
-assign busy = (m_axis_tx_tvalid & !m_axis_tx_tready);
-
 always_ff @(posedge axi_clk) begin
-    if (!aresetn) begin
-        m_axis_tx_tvalid <= 1'b0;
-        m_axis_tx_tdata  <= 64'h0;
-    end else if (data_available && !busy) begin
-        m_axis_tx_tvalid <= 1'b1;
-        m_axis_tx_tdata  <= application_data;
-    end else if (m_axis_tx_tready) begin
-        m_axis_tx_tvalid <= 1'b0;
-    end
+    case (qeciphy_status)
+        STATUS_LINK_READY: begin
+            // Link is ready for data transfer
+            link_ready <= 1'b1;
+        end
+        STATUS_FAULT_FATAL: begin
+            // Handle error condition
+            link_ready <= 1'b0;
+            // Check ECODE for specific error type
+        end
+        default: begin
+            // Link not ready yet
+            link_ready <= 1'b0;
+        end
+    endcase
 end
 ```
 
