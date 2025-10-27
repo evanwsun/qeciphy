@@ -147,7 +147,7 @@ make synth OPT_PROFILE=<profile> OPT_MODE=gui   # Run synthesis (GUI mode)
 
 ## License
 
-This repository is not yet open-sourced. The final BSD-3-Clause license will be added prior to public release.
+Please see the [LICENSE](LICENSE) file for license details.
 
 ## Support
 
