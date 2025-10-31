@@ -88,7 +88,7 @@ module qeciphy_rx_bytealigner #(
    // FSM states
    // -------------------------------------------------------------
 
-   always_ff @(posedge clk or negedge rst_n) begin
+   always_ff @(posedge clk) begin
       if (!rst_n) fsm <= IDLE;
       else fsm <= fsm_nxt;
    end
@@ -125,7 +125,7 @@ module qeciphy_rx_bytealigner #(
    // -------------------------------------------------------------
 
    // Slide idle counter
-   always_ff @(posedge clk or negedge rst_n) begin
+   always_ff @(posedge clk) begin
       if (!rst_n) rx_slide_idle_count <= 'h0;
       else rx_slide_idle_count <= rx_slide_idle_count_nxt;
    end
@@ -133,7 +133,7 @@ module qeciphy_rx_bytealigner #(
    assign rx_slide_idle_count_nxt = fsm_idle ? 'h0 : fsm_off & rx_slide_idle_count_max & i_rx_slide_rdy ? 'h0 : fsm_off ? rx_slide_idle_count + 'h1 : rx_slide_idle_count;
 
    // Slide counter
-   always_ff @(posedge clk or negedge rst_n) begin
+   always_ff @(posedge clk) begin
       if (!rst_n) rx_slide_count <= 'h0;
       else rx_slide_count <= rx_slide_count_nxt;
    end
@@ -145,7 +145,7 @@ module qeciphy_rx_bytealigner #(
                                                                                       rx_slide_count;
 
    // Pattern counter
-   always_ff @(posedge clk or negedge rst_n) begin
+   always_ff @(posedge clk) begin
       if (!rst_n) rx_pattern_count <= 'h0;
       else rx_pattern_count <= rx_pattern_count_nxt;
    end
@@ -159,7 +159,7 @@ module qeciphy_rx_bytealigner #(
    // Matched counter
    assign rx_align_matched     = fsm_review & rx_datan_comma_m & rx_align_boundary_check;
 
-   always_ff @(posedge clk or negedge rst_n) begin
+   always_ff @(posedge clk) begin
       if (!rst_n) rx_align_matched_count <= 'h0;
       else rx_align_matched_count <= rx_align_matched_count_nxt;
    end
@@ -170,7 +170,7 @@ module qeciphy_rx_bytealigner #(
 
    // Timeout counter
 
-   always_ff @(posedge clk or negedge rst_n) begin
+   always_ff @(posedge clk) begin
       if (!rst_n) rx_align_timeout_count <= 'h0;
       else rx_align_timeout_count <= rx_align_timeout_count_nxt;
    end

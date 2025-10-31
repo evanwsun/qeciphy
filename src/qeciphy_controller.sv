@@ -75,28 +75,28 @@ module qeciphy_controller (
 
    assign pd_req_nxt = (~i_pstate && i_preq && state_ready) ? 1'b1 : state_sleep ? 1'b0 : o_pd_req;
 
-   always_ff @(posedge axis_clk or negedge axis_rst_n) begin
+   always_ff @(posedge axis_clk) begin
       if (~axis_rst_n) o_pd_req <= 1'b0;
       else o_pd_req <= pd_req_nxt;
    end
 
    assign pu_req_nxt = (i_pstate && i_preq && state_sleep) ? 1'b1 : 1'b0;
 
-   always_ff @(posedge axis_clk or negedge axis_rst_n) begin
+   always_ff @(posedge axis_clk) begin
       if (~axis_rst_n) pu_req <= 1'b0;
       else pu_req <= pu_req_nxt;
    end
 
    assign paccept_nxt = (~i_preq && o_paccept) ? 1'b0 : (state_sleep && i_preq && ~i_pstate) ? 1'b1 : (state_ready && i_preq && i_pstate) ? 1'b1 : o_paccept;
 
-   always_ff @(posedge axis_clk or negedge axis_rst_n) begin
+   always_ff @(posedge axis_clk) begin
       if (~axis_rst_n) o_paccept <= 1'b0;
       else o_paccept <= paccept_nxt;
    end
 
    assign pactive_nxt = (state_link_training) ? 1'b0 : (state_sleep && i_tx_tvalid) ? 1'b1 : o_pactive;
 
-   always_ff @(posedge axis_clk or negedge axis_rst_n) begin
+   always_ff @(posedge axis_clk) begin
       if (~axis_rst_n) o_pactive <= 1'b0;
       else o_pactive <= pactive_nxt;
    end
@@ -105,7 +105,7 @@ module qeciphy_controller (
    // FSM
    // -------------------------------------------------------------
 
-   always_ff @(posedge axis_clk or negedge axis_rst_n) begin
+   always_ff @(posedge axis_clk) begin
       if (~axis_rst_n) state <= RESET;
       else state <= state_nxt;
    end
@@ -136,7 +136,7 @@ module qeciphy_controller (
 
    assign error_check_enable = state_ready || (state == RX_LOCKED);
 
-   always_ff @(posedge axis_clk or negedge axis_rst_n) begin
+   always_ff @(posedge axis_clk) begin
       if (~axis_rst_n) err <= OK;
       else err <= error_nxt;
    end
@@ -151,7 +151,7 @@ module qeciphy_controller (
    assign o_ecode   = err;
    assign o_pd_ack  = i_remote_pd_req;
 
-   always_ff @(posedge axis_clk or negedge axis_rst_n) begin
+   always_ff @(posedge axis_clk) begin
       if (~axis_rst_n) begin
          o_rst_n <= 1'b0;
       end else begin

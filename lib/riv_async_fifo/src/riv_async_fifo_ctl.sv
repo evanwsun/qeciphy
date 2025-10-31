@@ -47,7 +47,7 @@ module riv_async_fifo_ctl #(
 
    assign addr_nxt = en ? addr + ADDR_WIDTH'(1'b1) : addr;
 
-   always_ff @(posedge clk or negedge rst_n) begin
+   always_ff @(posedge clk) begin
       if (~rst_n) begin
          addr <= '0;
       end else begin
@@ -60,7 +60,7 @@ module riv_async_fifo_ctl #(
    // -------------------------------------------------------------
 
    // State machine
-   always_ff @(posedge clk or negedge rst_n) begin
+   always_ff @(posedge clk) begin
       if (~rst_n) begin
          fsm <= RESET;
       end else begin

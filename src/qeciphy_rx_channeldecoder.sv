@@ -94,7 +94,7 @@ module qeciphy_rx_channeldecoder (
    // Convert the 32-bit words captured on gt_rx_clk to 64-bit words on rx_clk
    // -------------------------------------------------------------
 
-   always_ff @(posedge gt_rx_clk or negedge rst_n) begin
+   always_ff @(posedge gt_rx_clk) begin
       if (~rst_n) begin
          gt_rx_data_q <= '0;
       end else begin
@@ -102,7 +102,7 @@ module qeciphy_rx_channeldecoder (
       end
    end
 
-   always_ff @(posedge gt_rx_clk or negedge rst_n) begin
+   always_ff @(posedge gt_rx_clk) begin
       if (~rst_n) begin
          rx_data_reg[0] <= 32'd0;
          rx_data_reg[1] <= 32'd0;
@@ -114,7 +114,7 @@ module qeciphy_rx_channeldecoder (
       end
    end
 
-   always_ff @(posedge gt_rx_clk or negedge rst_n) begin
+   always_ff @(posedge gt_rx_clk) begin
       if (~rst_n) begin
          ptr <= 1'b0;
       end else begin
@@ -135,12 +135,12 @@ module qeciphy_rx_channeldecoder (
    // FSM
    // -------------------------------------------------------------
 
-   always_ff @(posedge rx_clk or negedge rst_n) begin
+   always_ff @(posedge rx_clk) begin
       if (~rst_n) state <= RESET;
       else state <= state_nxt;
    end
 
-   always_ff @(posedge rx_clk or negedge rst_n) begin
+   always_ff @(posedge rx_clk) begin
       if (~rst_n) option <= '0;
       else option <= option_nxt;
    end
@@ -170,7 +170,7 @@ module qeciphy_rx_channeldecoder (
    // and in the cycle after that, we set fa_counter. Therefore, we initialize fa_counter to two.  
    assign fa_counter_nxt = state_word_align ? 9'h2 : fa_counter + 9'h1;
 
-   always_ff @(posedge rx_clk or negedge rst_n) begin
+   always_ff @(posedge rx_clk) begin
       if (~rst_n) begin
          fa_counter <= '0;
       end else begin
@@ -178,7 +178,7 @@ module qeciphy_rx_channeldecoder (
       end
    end
 
-   always_ff @(posedge rx_clk or negedge rst_n) begin
+   always_ff @(posedge rx_clk) begin
       if (~rst_n) begin
          fa_counter_done <= 1'b0;
       end else begin
@@ -189,7 +189,7 @@ module qeciphy_rx_channeldecoder (
    assign crc_cnt_rst = fa_counter_done || crc_counter_done;
    assign crc_counter_nxt = state_word_align ? 3'd1 : crc_cnt_rst ? 3'h0 : crc_counter + 3'h1;
 
-   always_ff @(posedge rx_clk or negedge rst_n) begin
+   always_ff @(posedge rx_clk) begin
       if (~rst_n) begin
          crc_counter <= 3'd1;
       end else begin
@@ -241,7 +241,7 @@ module qeciphy_rx_channeldecoder (
 
    assign crc_en_sr_nxt = crc_cnt_rst ? 6'h3 : (crc_en_sr << 1);
 
-   always_ff @(posedge rx_clk or negedge rst_n) begin
+   always_ff @(posedge rx_clk) begin
       if (~rst_n) crc_en_sr <= '0;
       else crc_en_sr <= crc_en_sr_nxt;
    end
@@ -283,7 +283,7 @@ module qeciphy_rx_channeldecoder (
    // -------------------------------------------------------------
 
    // Hold the output until the validation word is received
-   always_ff @(posedge rx_clk or negedge rst_n) begin
+   always_ff @(posedge rx_clk) begin
       if (~rst_n) begin
          for (int i = 0; i < 7; i++) begin
             o_data_sr[i] <= '0;
@@ -302,7 +302,7 @@ module qeciphy_rx_channeldecoder (
 
    assign o_valid_sr_nxt = crc_boundary_check ? {rx_data[13:8]} : {1'b0, o_valid_sr[5:1]};
 
-   always_ff @(posedge rx_clk or negedge rst_n) begin
+   always_ff @(posedge rx_clk) begin
       if (~rst_n) begin
          o_valid_sr <= '0;
       end else begin
@@ -318,7 +318,7 @@ module qeciphy_rx_channeldecoder (
    assign o_rx_valid = o_valid_sr[0] & state_ready;
    assign o_rx_rdy   = state_ready;
 
-   always_ff @(posedge rx_clk or negedge rst_n) begin
+   always_ff @(posedge rx_clk) begin
       if (~rst_n) begin
          o_remote_rx_rdy <= 1'b0;
       end else if (fa_boundary_check) begin  // Monitor this even if state != READY
@@ -326,7 +326,7 @@ module qeciphy_rx_channeldecoder (
       end
    end
 
-   always_ff @(posedge rx_clk or negedge rst_n) begin
+   always_ff @(posedge rx_clk) begin
       if (~rst_n) begin
          o_remote_pd_req <= 1'b0;
       end else if (fa_boundary_check) begin
@@ -334,7 +334,7 @@ module qeciphy_rx_channeldecoder (
       end
    end
 
-   always_ff @(posedge rx_clk or negedge rst_n) begin
+   always_ff @(posedge rx_clk) begin
       if (~rst_n) begin
          o_remote_pd_ack <= 1'b0;
       end else if (fa_boundary_check) begin
@@ -342,7 +342,7 @@ module qeciphy_rx_channeldecoder (
       end
    end
 
-   always_ff @(posedge rx_clk or negedge rst_n) begin
+   always_ff @(posedge rx_clk) begin
       if (~rst_n) begin
          o_fap_missing <= 1'b0;
       end else if (fa_boundary_check) begin
@@ -350,7 +350,7 @@ module qeciphy_rx_channeldecoder (
       end
    end
 
-   always_ff @(posedge rx_clk or negedge rst_n) begin
+   always_ff @(posedge rx_clk) begin
       if (~rst_n) begin
          o_crc_mismatch <= 1'b0;
       end else if (crc_boundary_check) begin
