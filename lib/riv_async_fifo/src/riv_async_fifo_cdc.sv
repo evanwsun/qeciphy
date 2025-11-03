@@ -52,7 +52,7 @@ module riv_async_fifo_cdc #(
    // WADDR is latched into a stable register during the LOAD state for transfer to the RCLK domain.
    assign waddr_latch_nxt = wr_fsm_load ? waddr : waddr_latch;
 
-   always_ff @(posedge wclk or negedge wrst_n) begin
+   always_ff @(posedge wclk) begin
       if (~wrst_n) begin
          waddr_latch <= '0;
       end else begin
@@ -69,7 +69,7 @@ module riv_async_fifo_cdc #(
    );
 
    // Generate an acknowledge signal in the RCLK domain to indicate that WADDR has been successfully sampled.
-   always_ff @(posedge rclk or negedge rrst_n) begin
+   always_ff @(posedge rclk) begin
       if (~rrst_n) begin
          wr_fsm_recv_ack_rd <= 1'b0;
       end else begin
@@ -83,7 +83,7 @@ module riv_async_fifo_cdc #(
    // WADDR is sampled in RCLK domain.
    assign waddr_rd_nxt = waddr_sample_rd ? waddr_latch : waddr_rd;
 
-   always_ff @(posedge rclk or negedge rrst_n) begin
+   always_ff @(posedge rclk) begin
       if (~rrst_n) begin
          waddr_rd <= '0;
       end else begin
@@ -106,7 +106,7 @@ module riv_async_fifo_cdc #(
    // RADDR is latched into a stable register during the LOAD state for transfer to the WCLK domain.
    assign raddr_latch_nxt = rd_fsm_load ? raddr : raddr_latch;
 
-   always_ff @(posedge rclk or negedge rrst_n) begin
+   always_ff @(posedge rclk) begin
       if (~rrst_n) begin
          raddr_latch <= '0;
       end else begin
@@ -123,7 +123,7 @@ module riv_async_fifo_cdc #(
    );
 
    // Generate an acknowledge signal in the WCLK domain to indicate that RADDR has been successfully sampled.
-   always_ff @(posedge wclk or negedge wrst_n) begin
+   always_ff @(posedge wclk) begin
       if (~wrst_n) begin
          rd_fsm_recv_ack_wr <= 1'b0;
       end else begin
@@ -137,7 +137,7 @@ module riv_async_fifo_cdc #(
    // RADDR is sampled in WCLK domain.
    assign raddr_wr_nxt = raddr_sample_wr ? raddr_latch : raddr_wr;
 
-   always_ff @(posedge wclk or negedge wrst_n) begin
+   always_ff @(posedge wclk) begin
       if (~wrst_n) begin
          raddr_wr <= '0;
       end else begin

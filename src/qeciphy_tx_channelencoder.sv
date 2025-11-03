@@ -58,7 +58,7 @@ module qeciphy_tx_channelencoder (
    // Transmit 32 bits per cycle using the gt_tx_clk
    // -------------------------------------------------------------
 
-   always_ff @(posedge gt_tx_clk or negedge rst_n) begin
+   always_ff @(posedge gt_tx_clk) begin
       if (~rst_n) begin
          cycle <= 1'b0;
       end else begin
@@ -78,7 +78,7 @@ module qeciphy_tx_channelencoder (
    // Counters
    // ----------------------------------------------------
 
-   always_ff @(posedge tx_clk or negedge rst_n) begin
+   always_ff @(posedge tx_clk) begin
       if (~rst_n) begin
          fa_counter <= '0;
       end else begin
@@ -86,7 +86,7 @@ module qeciphy_tx_channelencoder (
       end
    end
 
-   always_ff @(posedge tx_clk or negedge rst_n) begin
+   always_ff @(posedge tx_clk) begin
       if (~rst_n) begin
          fa_counter_done <= 1'b0;
       end else begin
@@ -97,7 +97,7 @@ module qeciphy_tx_channelencoder (
    assign crc_cnt_rst = fa_counter_done || crc_counter_done;
    assign crc_counter_nxt = crc_cnt_rst ? 3'h0 : crc_counter + 3'h1;
 
-   always_ff @(posedge tx_clk or negedge rst_n) begin
+   always_ff @(posedge tx_clk) begin
       if (~rst_n) begin
          crc_counter <= 3'd1;
          // Align the counter correctly
@@ -106,7 +106,7 @@ module qeciphy_tx_channelencoder (
       end
    end
 
-   always_ff @(posedge tx_clk or negedge rst_n) begin
+   always_ff @(posedge tx_clk) begin
       if (~rst_n) begin
          crc_counter_done <= 1'b0;
       end else begin
@@ -126,7 +126,7 @@ module qeciphy_tx_channelencoder (
 
    assign crc_en_sr_nxt = crc_cnt_rst ? 6'h3 : (crc_en_sr << 1);
 
-   always_ff @(posedge tx_clk or negedge rst_n) begin
+   always_ff @(posedge tx_clk) begin
       if (~rst_n) crc_en_sr <= '0;
       else crc_en_sr <= crc_en_sr_nxt;
    end
@@ -170,7 +170,7 @@ module qeciphy_tx_channelencoder (
    assign pd_req = i_pd_req && ~i_tx_valid;
    assign pd_ack = i_pd_ack && ~i_tx_valid;
 
-   always_ff @(posedge tx_clk or negedge rst_n) begin
+   always_ff @(posedge tx_clk) begin
       if (~rst_n) begin
          valid_sr <= '0;
       end else if (o_tx_ready) begin
@@ -182,7 +182,7 @@ module qeciphy_tx_channelencoder (
                           crc_counter_done ? {crc45, crc23, crc01, valid_sr, crcvw} :
                           i_tx_valid && o_tx_ready ? i_tx_data : 64'h0;
 
-   always_ff @(posedge tx_clk or negedge rst_n) begin
+   always_ff @(posedge tx_clk) begin
       if (~rst_n) begin
          tx_data <= '0;
       end else begin
