@@ -8,6 +8,10 @@ module QECIPHY #(
     parameter GT_TYPE = "GTY"
 ) (
     input  logic        RCLK,
+    input logic [0:0] gty_rxp,
+    input logic [0:0] gty_rxn,
+    output logic [0:0] gty_txp,
+    output logic [0:0] gty_txn,
     input  logic        FCLK,
     input  logic        ACLK,
     input  logic        ARSTn,
@@ -255,7 +259,11 @@ module QECIPHY #(
        .GT_TYPE(GT_TYPE)
    ) i_qeciphy_gt_wrapper (
        .gt_ref_clk(RCLK),
-
+       .gty_rxn                        (gty_rxn),
+       .gty_rxp                        (gty_rxp),
+       .gty_txn                        (gty_txn),
+       .gty_txp                        (gty_txp),
+       
        .fclk           (FCLK),
        .rst_n          (gt_rst_n),
        .o_gt_power_good(gt_power_good_fclk),

@@ -6,6 +6,10 @@ module qeciphy_gt_wrapper #(
     parameter GT_TYPE = "GTY"  // Valid values: "GTX", "GTY", "GTH"
 ) (
     input logic gt_ref_clk,
+    input logic [0:0] gty_rxp,
+    input logic [0:0] gty_rxn,
+    output logic [0:0] gty_txp,
+    output logic [0:0] gty_txn,
 
     input  logic fclk,
     input  logic rst_n,
@@ -64,10 +68,10 @@ module qeciphy_gt_wrapper #(
              .qpll0lock_out                     (),
              .qpll0outclk_out                   (),
              .qpll0outrefclk_out                (),
-             .gtyrxn_in                         (),
-             .gtyrxp_in                         (),
-             .gtytxn_out                        (),
-             .gtytxp_out                        (),
+             .gtyrxn_in                          (gty_rxn),
+             .gtyrxp_in                          (gty_rxp),
+             .gtytxn_out                          (gty_txn),
+             .gtytxp_out                          (gty_txp),
              .rx8b10ben_in                      (1'b1),
              .rxusrclk_in                       (gt_rx_clk),
              .rxusrclk2_in                      (gt_rx_clk),

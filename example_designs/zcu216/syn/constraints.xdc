@@ -4,6 +4,8 @@
 
 create_clock -period 6.4 -name gt_refclk [get_ports gt_refclk_in_p]
 set_property PACKAGE_PIN H34 [get_ports gt_refclk_in_p]
+set_property PACKAGE_PIN P38 [get_ports gty_txp[0]]
+set_property PACKAGE_PIN W41 [get_ports gty_rxp[0]]
 
 create_generated_clock -name rx_clk    [get_pins -hierarchical -filter {NAME =~ *QECIPHY*i_qeciphy_gt_wrapper/gen_GTY_transceiver.i_BUFG_rx_clk/O}]
 create_generated_clock -name gt_rx_clk [get_pins -hierarchical -filter {NAME =~ *QECIPHY*i_qeciphy_gt_wrapper*channel_inst/gtye4_channel_gen.gen_gtye4_channel_inst[0].GTYE4_CHANNEL_PRIM_INST/RXOUTCLK}]

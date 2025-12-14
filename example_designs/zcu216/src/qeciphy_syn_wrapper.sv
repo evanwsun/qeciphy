@@ -5,6 +5,11 @@
 module qeciphy_syn_wrapper (
     input  logic       gt_refclk_in_p,
     input  logic       gt_refclk_in_n,
+    input logic [0:0] gty_rxp,
+    input logic [0:0] gty_rxn,
+    output logic [0:0] gty_txp,
+    output logic [0:0] gty_txn,
+    
     output logic [3:0] SFP_tx_enable,
     output logic [2:0] led
 );
@@ -142,6 +147,10 @@ module qeciphy_syn_wrapper (
        .GT_TYPE("GTY")
    ) i_QECIPHY (
        .RCLK     (RCLK),
+       .gty_rxn                         (gty_rxn),
+       .gty_rxp                         (gty_rxp),
+       .gty_txn                        (gty_txn),
+       .gty_txp                        (gty_txp),
        .FCLK     (FCLK),
        .ACLK     (ACLK),
        .ARSTn    (ARSTn),
