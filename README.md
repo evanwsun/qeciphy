@@ -8,9 +8,11 @@ QECIPHY is a physical layer implementation according to the QECi (Quantum Error 
 [![Vivado](https://img.shields.io/badge/Vivado-2024%2B-orange.svg)]()
 [![SystemVerilog](https://img.shields.io/badge/HDL-SystemVerilog-green.svg)]()
 
-[![Lint](https://img.shields.io/github/actions/workflow/status/riverlane/qeciphy/regressions.yml?label=Lint&branch=main)](https://github.com/riverlane/qeciphy/actions/workflows/regressions.yml)
-[![Simulation](https://img.shields.io/github/actions/workflow/status/riverlane/qeciphy/regressions.yml?label=Simulation&branch=main)](https://github.com/riverlane/qeciphy/actions/workflows/regressions.yml)
-[![Synthesis](https://img.shields.io/github/actions/workflow/status/riverlane/qeciphy/regressions.yml?label=Synthesis&branch=main)](https://github.com/riverlane/qeciphy/actions/workflows/regressions.yml)
+[![Lint](https://img.shields.io/github/actions/workflow/status/riverlane/qeciphy/lint.yml?branch=main)](https://github.com/riverlane/qeciphy/actions/workflows/lint.yml)
+[![Simulation](https://img.shields.io/github/actions/workflow/status/riverlane/qeciphy/simulation.yml?branch=main)](https://github.com/riverlane/qeciphy/actions/workflows/simulation.yml)
+[![UVM](https://img.shields.io/github/actions/workflow/status/riverlane/qeciphy/uvm.yml?branch=main)](https://github.com/riverlane/qeciphy/actions/workflows/uvm.yml)
+[![Synthesis](https://img.shields.io/github/actions/workflow/status/riverlane/qeciphy/synthesis.yml?branch=main)](https://github.com/riverlane/qeciphy/actions/workflows/synthesis.yml)
+
 
 ## Key Features
 
@@ -23,6 +25,7 @@ QECIPHY is a physical layer implementation according to the QECi (Quantum Error 
 - **Error Detection**: CRC-16 for data packets, CRC-8 for control packets
 - **Link Management**: Automatic link training and status monitoring
 - **Power Management**: Optional power state control with P-channel interface
+- **UVM verified**: UVM testbench support with 100% functional coverage
 
 **Bottom Line:** You only need to send valid data packets from one FPGA and receive valid data packets on the other - no need to add headers, manage link state, or handle physical layer protocols.
 
@@ -152,6 +155,7 @@ make synth OPT_PROFILE=<profile> OPT_MODE=gui   # Run synthesis (GUI mode)
 - **[QECi Specification](https://www.riverlane.com/get-qec-ready/qeci)** - Physical layer specification
 - **[Integration Guide](INTEGRATION.md)** - How to use QECIPHY in your design
 - **[Multi-Platform Simulation](docs/multi_platform_simulation.md)** - VCS and XSim simulation support
+- **[UVM Verification](docs/UVM_Simulation.md)** - UVM support
 - **[Contribution Guide](CONTRIBUTING.md)** - Development and contribution guidelines
 
 ## License
