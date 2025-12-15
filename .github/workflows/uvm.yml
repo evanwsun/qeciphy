@@ -1,0 +1,39 @@
+name: UVM
+
+on:
+  workflow_run:
+    workflows: ["Lint"]
+    types: [completed]
+
+jobs:
+  changes:
+    if: >
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: sanity-builder
+    outputs:
+      uvm: ${{ steps.changes.outputs.uvm }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            uvm:
+              - 'src/**'
+              - 'lib/**'
+              - 'vendors/**'
+              - 'src.f'
+              - 'uvm/**'
+              - 'uvm.f'
+              - 'verif_vip/**'
+              - 'Makefile'
+              - 'scripts/**'
+              - 'config.json'
+
+  uvm-simulation:
+    needs: changes
+    if: needs.changes.outputs.uvm == 'true'
+    runs-on: sanity-builder
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash ci/uvm_sim.sh

@@ -1,0 +1,46 @@
+name: Simulation
+
+on:
+  workflow_run:
+    workflows: ["Lint"]
+    types: [completed]
+
+jobs:
+  changes:
+    if: >
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: sanity-builder
+    outputs:
+      simulation: ${{ steps.changes.outputs.simulation }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            simulation:
+              - 'src/**'
+              - 'lib/**'
+              - 'tb/**'
+              - 'vendors/**'
+              - 'sim.f'
+              - 'src.f'
+              - 'Makefile'
+              - 'scripts/**'
+              - 'config.json'
+
+  fpga-simulation:
+    needs: changes
+    if: needs.changes.outputs.simulation == 'true'
+    runs-on: sanity-builder
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash ci/xsim_sim.sh
+
+  fpga-simulation-vcs:
+    needs: changes
+    if: needs.changes.outputs.simulation == 'true'
+    runs-on: sanity-builder
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash ci/vcs_sim.sh

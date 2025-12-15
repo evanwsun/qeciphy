@@ -1,0 +1,34 @@
+name: Format
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  changes:
+    runs-on: sanity-builder
+    environment: ci
+    outputs:
+      format: ${{ steps.changes.outputs.format }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            format:
+              - '**/*.sv'
+              - '**/*.sva'
+              - '**/*.svh'
+              - '**/*.v'
+
+  format:
+    needs: changes
+    if: needs.changes.outputs.format == 'true'
+    runs-on: sanity-builder
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check code formatting
+        run: bash ci/format.sh

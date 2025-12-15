@@ -1,0 +1,39 @@
+name: Lint
+
+on:
+  workflow_run:
+    workflows: ["Format"]
+    types: [completed]
+
+jobs:
+  changes:
+    if: >
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: sanity-builder
+    outputs:
+      lint: ${{ steps.changes.outputs.lint }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            lint:
+              - 'lint_stubs/**'
+              - 'src/**'
+              - 'src.f'
+              - 'lint.f'
+              - 'lib/**'
+              - 'lint_waivers.vlt'
+              - 'Makefile'
+              - 'scripts/**'
+              - 'config.json'
+
+  lint:
+    needs: changes
+    if: needs.changes.outputs.lint == 'true'
+    runs-on: sanity-builder
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run lint
+        run: bash ci/lint.sh
