@@ -11,6 +11,8 @@ QECIPHY is a physical layer implementation according to the QECi (Quantum Error 
 [![Lint](https://img.shields.io/github/actions/workflow/status/riverlane/qeciphy/regressions.yml?label=Lint&branch=main)](https://github.com/riverlane/qeciphy/actions/workflows/regressions.yml)
 [![Simulation](https://img.shields.io/github/actions/workflow/status/riverlane/qeciphy/regressions.yml?label=Simulation&branch=main)](https://github.com/riverlane/qeciphy/actions/workflows/regressions.yml)
 [![Synthesis](https://img.shields.io/github/actions/workflow/status/riverlane/qeciphy/regressions.yml?label=Synthesis&branch=main)](https://github.com/riverlane/qeciphy/actions/workflows/regressions.yml)
+[![UVM](https://img.shields.io/github/actions/workflow/status/riverlane/qeciphy/regressions.yml?label=UVM&branch=main)](https://github.com/riverlane/qeciphy/actions/workflows/regressions.yml)
+
 
 ## Key Features
 
@@ -23,6 +25,7 @@ QECIPHY is a physical layer implementation according to the QECi (Quantum Error 
 - **Error Detection**: CRC-16 for data packets, CRC-8 for control packets
 - **Link Management**: Automatic link training and status monitoring
 - **Power Management**: Optional power state control with P-channel interface
+- **Functionality Verified**: Verified using SV-UVM testbench and 100% functional coverage
 
 **Bottom Line:** You only need to send valid data packets from one FPGA and receive valid data packets on the other - no need to add headers, manage link state, or handle physical layer protocols.
 
@@ -110,9 +113,10 @@ qeciphy/
 ├── vendors/                     # Vendor-specific IP generation scripts
 ├── scripts/                     # Build and utility scripts
 ├── lint_stubs/                  # Lint placeholder modules for IP cores
+├── uvm/                         # UVM testbench(agents, scorebaords, tests and sequence) and regression scripts
 ├── config.json                  # Build configuration (profiles, settings)
 ├── Makefile                     # Build automation
-├── src.f, sim.f, lint.f         # File lists for different flows
+├── src.f, sim.f, lint.f, uvm.f  # File lists for different flows
 ├── CONTRIBUTING.md              # Development guidelines
 ├── README.md                    # This file
 └── LICENSE                      # License information
@@ -133,6 +137,11 @@ make sim OPT_PROFILE=<profile> OPT_SIMULATOR=vcs # Run VCS simulation (batch mod
 make sim OPT_PROFILE=<profile> OPT_SIMULATOR=vcs OPT_MODE=gui # Run VCS simulation (GUI mode)
 make synth OPT_PROFILE=<profile>                # Run synthesis (batch mode)
 make synth OPT_PROFILE=<profile> OPT_MODE=gui   # Run synthesis (GUI mode)
+make uvm-sim OPT_TEST=<test> OPT_PROFILE=<profile> # Run UVM test in batch mode
+make uvm-sim OPT_TEST=<test> OPT_PROFILE=<profile> OPT_MODE=gui # Run UVM test with synopsys verdi(GUI)
+make uvm-sim OPT_TEST=<test> OPT_PROFILE=<profile> OPT_MODE=cov # Run UVM test in batch mode with coverage database
+make uvm-sim OPT_TEST=<test> OPT_PROFILE=<profile> OPT_ARGS=+DUT_XFERS=20000 # Run UVM test with optional test args
+
 ```
 
 **Note:** Always run `make generate-xci` before `make sim` or `make synth`.
@@ -153,6 +162,7 @@ make synth OPT_PROFILE=<profile> OPT_MODE=gui   # Run synthesis (GUI mode)
 - **[Integration Guide](INTEGRATION.md)** - How to use QECIPHY in your design
 - **[Multi-Platform Simulation](docs/multi_platform_simulation.md)** - VCS and XSim simulation support
 - **[Contribution Guide](CONTRIBUTING.md)** - Development and contribution guidelines
+- **[UVM Verification](docs/UVM_Simulation.md)** - UVM tesbench architeture and usage instructions
 
 ## License
 
