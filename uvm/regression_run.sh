@@ -12,9 +12,9 @@ for profile in "${PROFILES[@]}"; do
     echo "Generating XCI cores for $profile..."
     make generate-xci OPT_PROFILE=$profile OPT_SIM_FILES=true
 
-    make uvm_compile_sim OPT_TOP=qeciphy_uvmtb OPT_PROFILE=$profile
+    make uvm_compile_sim OPT_PROFILE=$profile
     while IFS=',' read -r TEST_NAME OPT_ARGS; do
-        # Construct OPT_TOP from TEST_NAME (replace _test with _uvmtb)
+        # Construct from TEST_NAME (replace _test with _uvmtb)
         OPT_TEST="${TEST_NAME/_test}"
         
         # Combine all arguments (everything after TEST_NAME)
