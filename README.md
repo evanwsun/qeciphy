@@ -25,7 +25,7 @@ QECIPHY is a physical layer implementation according to the QECi (Quantum Error 
 - **Error Detection**: CRC-16 for data packets, CRC-8 for control packets
 - **Link Management**: Automatic link training and status monitoring
 - **Power Management**: Optional power state control with P-channel interface
-- **Functionality Verified**: Verified using SV-UVM testbench and 100% functional coverage
+- **Functionality Verified**: Verified using SV-UVM testbench
 
 **Bottom Line:** You only need to send valid data packets from one FPGA and receive valid data packets on the other - no need to add headers, manage link state, or handle physical layer protocols.
 
@@ -113,7 +113,8 @@ qeciphy/
 ├── vendors/                     # Vendor-specific IP generation scripts
 ├── scripts/                     # Build and utility scripts
 ├── lint_stubs/                  # Lint placeholder modules for IP cores
-├── uvm/                         # UVM testbench(agents, scorebaords, tests and sequence) and regression scripts
+├── uvm/                         # UVM testbench(scorebaords, tests and sequence) and regression scripts
+├── verif_vip/                   # UVM agents for all interfaces
 ├── config.json                  # Build configuration (profiles, settings)
 ├── Makefile                     # Build automation
 ├── src.f, sim.f, lint.f, uvm.f  # File lists for different flows
