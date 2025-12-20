@@ -16,7 +16,7 @@ make clean
 make lint
 make format
 make generate-xci OPT_PROFILE=zcu216
-make sim OPT_PROFILE=zcu216
+make sim OPT_PROFILE=zcu216 OPT_TOOL=(xsim|vcs)
 make synth OPT_PROFILE=zcu216
 ```
 
@@ -44,7 +44,7 @@ Include in your issue report:
    make format
    make lint
    make generate-xci OPT_PROFILE=zcu216
-   make sim OPT_PROFILE=zcu216
+   make sim OPT_PROFILE=zcu216 OPT_TOOL=(xsim|vcs)
    make synth OPT_PROFILE=zcu216
    # Test other profiles as needed
    ```
