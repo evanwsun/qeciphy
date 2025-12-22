@@ -133,10 +133,10 @@ make lint                                       # Run Verilator linting
 make format                                     # Format SystemVerilog files
 make generate-xci OPT_PROFILE=<profile>         # Generate vendor IP
 make generate-xci OPT_PROFILE=<profile> OPT_SIM_FILES=true  # Generate vendor IP and corresponding simulation files
-make sim OPT_PROFILE=<profile>                  # Run simulation with XSim (batch mode)
-make sim OPT_PROFILE=<profile> OPT_MODE=gui     # Run simulation with XSim (GUI mode)
-make sim OPT_PROFILE=<profile> OPT_SIMULATOR=vcs # Run VCS simulation (batch mode)
-make sim OPT_PROFILE=<profile> OPT_SIMULATOR=vcs OPT_MODE=gui # Run VCS simulation (GUI mode)
+make sim OPT_PROFILE=<profile> OPT_TOOL=xsim                  # Run simulation with XSim (batch mode)
+make sim OPT_PROFILE=<profile> OPT_TOOL=xsim OPT_MODE=gui     # Run simulation with XSim (GUI mode)
+make sim OPT_PROFILE=<profile> OPT_TOOL=vcs # Run VCS simulation (batch mode)
+make sim OPT_PROFILE=<profile> OPT_TOOL=vcs OPT_MODE=gui # Run VCS simulation (GUI mode)
 make synth OPT_PROFILE=<profile>                # Run synthesis (batch mode)
 make synth OPT_PROFILE=<profile> OPT_MODE=gui   # Run synthesis (GUI mode)
 make uvm-sim OPT_TEST=<test> OPT_PROFILE=<profile> # Run UVM test in batch mode

@@ -19,8 +19,8 @@ QECIPHY supports multiple simulation platforms to accommodate different developm
 make generate-xci OPT_PROFILE=zcu216
 
 # Run simulation
-make sim OPT_PROFILE=zcu216 # Non-GUI mode
-# make sim OPT_PROFILE=zcu216 OPT_MODE=gui # GUI mode
+make sim OPT_PROFILE=zcu216 OPT_TOOL=xsim # Non-GUI mode
+# make sim OPT_PROFILE=zcu216 OPT_TOOL=xsim OPT_MODE=gui # GUI mode
 ```
 
 ### VCS
@@ -29,8 +29,8 @@ make sim OPT_PROFILE=zcu216 # Non-GUI mode
 make generate-xci OPT_PROFILE=zcu216 OPT_SIM_FILES=true
 
 # Run VCS simulation
-make sim OPT_PROFILE=zcu216 OPT_SIMULATOR=vcs # Non-GUI mode
-# make sim OPT_PROFILE=zcu216 OPT_SIMULATOR=vcs OPT_MODE=gui # GUI mode
+make sim OPT_PROFILE=zcu216 OPT_TOOL=vcs # Non-GUI mode
+# make sim OPT_PROFILE=zcu216 OPT_TOOL=vcs OPT_MODE=gui # GUI mode
 ```
 
 ## IP Generation and Simulation Files
